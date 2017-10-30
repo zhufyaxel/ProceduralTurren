@@ -11,8 +11,12 @@ public class mapGenerator : MonoBehaviour {
     public float meshHeightMultiplier;
     public AnimationCurve meshHeightCurve;
 
-    public int mapWidth;
-	public int mapHeight;
+	const int mapChunkSize = 241;
+	[Range(0,6)]
+	public int levelOfDetail;
+
+	int mapWidth = mapChunkSize;
+	int mapHeight = mapChunkSize;
 	public float scale;
 
     public int octaves;
@@ -57,20 +61,20 @@ public class mapGenerator : MonoBehaviour {
         }
         if (drawMode == DrawMode.Mesh)
         {
-            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+			display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
 	}
 
     private void OnValidate()
     {
-        if (mapWidth < 1)
-        {
-            mapWidth = 1;
-        }
-        if (mapHeight < 1)
-        {
-            mapHeight = 1;
-        }
+		if (lacunarity < 1) 
+		{
+			lacunarity = 1;
+		}
+		if (octaves < 0) 
+		{
+			octaves = 0;
+		}
     }
 
     [System.Serializable]
